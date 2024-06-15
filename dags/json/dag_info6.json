@@ -1,0 +1,78 @@
+{
+    "dag_id": "mi_dag13",
+    "tags":"load-data",
+    "description":"Proceso de carga, transformacion y envio de data",
+    "default_args": {
+        "owner": "airflow",
+        "depends_on_past": false,
+        "email_on_failure": false,
+        "email_on_retry": false,
+        "retries": 1,
+        "retry_delay": 300
+    },
+    "tasks": [
+        {
+            "task_id": "ejecuta_carga_entre_servidores_desde_sevidor1",
+            "command": "python3 /root/ejecutar_servido2.py",
+            "ssh_conn_id": "my_ssh_conn",
+            "cmd_timeout":120,
+            "predecesores": []
+        },
+        {
+            "task_id": "Descargando_archivos_desde_azure_servidor2",
+            "command": "python3 /root/load_data_oracle.py",
+            "ssh_conn_id": "my_ssh_conn_serv3",
+            "cmd_timeout":120,
+            "predecesores": ["ejecuta_carga_entre_servidores_desde_sevidor1"]
+        },
+        {
+            "task_id": "Descargando_data_de_google_cloud_servidor2",
+            "command": "python3 /root/dowload_data_google-cloud.py",
+            "ssh_conn_id": "my_ssh_conn_serv2",
+            "cmd_timeout":120,
+            "predecesores": []
+        },
+        {
+            "task_id": "Caragando_data_mongoDB_servidor3",
+            "command": "python3 /root/load_data_mongoDB.py",
+            "ssh_conn_id": "my_ssh_conn_serv3",
+            "cmd_timeout":120,
+            "predecesores": ["ejecuta_carga_entre_servidores_desde_sevidor1"]
+        },
+        {
+            "task_id": "transformando_data_csv_servidor1",
+            "command": "python3 /root/transform_data_to_csv.py",
+            "ssh_conn_id": "my_ssh_conn",
+            "cmd_timeout":120,
+            "predecesores": ["Descargando_data_de_google_cloud_servidor2","Caragando_data_mongoDB_servidor3"]
+        },
+        {
+            "task_id": "cragando_data_a_postgres_servidor3",
+            "command": "python3 /root/load_data_postgres.py",
+            "ssh_conn_id": "my_ssh_conn_serv3",
+            "cmd_timeout":120,
+            "predecesores": ["Caragando_data_mongoDB_servidor3", "transformando_data_csv_servidor1"]
+        },
+        {
+            "task_id": "extrayendo_data_a_mongo-db-servidor3",
+            "command": "python3 /root/load_data_mongoDB.py",
+            "ssh_conn_id": "my_ssh_conn_serv3",
+            "cmd_timeout":120,
+            "predecesores": ["cragando_data_a_postgres_servidor3", "transformando_data_csv_servidor1"]
+        },
+        {
+            "task_id": "ejecuta_descarga_entre_servidores_desde_sevidor1",
+            "command": "python3 /root/ejecutar_servido2.py",
+            "ssh_conn_id": "my_ssh_conn",
+            "cmd_timeout":120,
+            "predecesores": ["cragando_data_a_postgres_servidor3"]
+        },
+        {
+            "task_id": "cargando_data_de_google_cloud_servidor2",
+            "command": "python3 /root/dowload_data_google-cloud.py",
+            "ssh_conn_id": "my_ssh_conn_serv2",
+            "cmd_timeout":120,
+            "predecesores": ["extrayendo_data_a_mongo-db-servidor3","ejecuta_descarga_entre_servidores_desde_sevidor1"]
+        }
+    ]
+}

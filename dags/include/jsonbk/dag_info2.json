@@ -1,0 +1,33 @@
+{
+    "dag_id": "mi_dag9",
+    "default_args": {
+        "owner": "airflow",
+        "depends_on_past": false,
+        "email_on_failure": false,
+        "email_on_retry": false,
+        "retries": 1,
+        "retry_delay": 300
+    },
+    "tasks": [
+        {
+            "task_id": "extraccion_mysql",
+            "python_file": "/opt/airflow/dags/scripts/extraer_data.py",
+            "predecesor": null
+        },
+        {
+            "task_id": "mover_servidor4",
+            "python_file": "/opt/airflow/dags/scripts/mover_data.py",
+            "predecesor": "extraccion_mysql"
+        },
+        {
+            "task_id": "cargar_fload1",
+            "python_file": "/opt/airflow/dags/scripts/cargar_fload.py",
+            "predecesor": "mover_servidor4"
+        },
+        {
+            "task_id": "cargar_teradata1",
+            "python_file": "/opt/airflow/dags/scripts/cargar_teradata.py",
+            "predecesor": "cargar_fload1"
+        }
+    ]
+}

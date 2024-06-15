@@ -1,0 +1,73 @@
+{
+    "dag_id": "mi_dag12",
+    "default_args": {
+        "owner": "airflow",
+        "depends_on_past": false,
+        "email_on_failure": false,
+        "email_on_retry": false,
+        "retries": 1,
+        "retry_delay": 300
+    },
+    "tasks": [
+        {
+            "task_id": "extraccion_oracle",
+            "python_file": "/opt/airflow/dags/scripts/extraer_data.py",
+            "predecesores": []
+        },
+        {
+            "task_id": "mover_servidor2",
+            "python_file": "/opt/airflow/dags/scripts/mover_data.py",
+            "predecesores": ["extraccion_oracle"]
+        },
+        {
+            "task_id": "cargar_fload",
+            "python_file": "/opt/airflow/dags/scripts/cargar_fload.py",
+            "predecesores": []
+        },
+        {
+            "task_id": "cargar_teradata",
+            "python_file": "/opt/airflow/dags/scripts/cargar_teradata.py",
+            "predecesores": ["extraccion_oracle"]
+        },
+        {
+            "task_id": "ramificacion_1",
+            "python_file": "/opt/airflow/dags/scripts/ramificacion_1.py",
+            "predecesores": ["mover_servidor2"]
+        },
+        {
+            "task_id": "ramificacion_2",
+            "python_file": "/opt/airflow/dags/scripts/ramificacion_2.py",
+            "predecesores": ["cargar_fload", "cargar_teradata"]
+        },
+        {
+            "task_id": "task_id_5",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["ramificacion_1", "ramificacion_2"]
+        },
+        {
+            "task_id": "task_id_6",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["task_id_5"]
+        },
+        {
+            "task_id": "task_id_7",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["task_id_6"]
+        },
+        {
+            "task_id": "task_id_8",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["ramificacion_1"]
+        },
+        {
+            "task_id": "task_id_9",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["task_id_8","task_id_7"]
+        },
+        {
+            "task_id": "task_id_10",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesores": ["task_id_9"]
+        }
+    ]
+}

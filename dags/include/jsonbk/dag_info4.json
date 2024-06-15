@@ -1,0 +1,163 @@
+{
+    "dag_id": "mi_dag11",
+    "default_args": {
+        "owner": "airflow",
+        "depends_on_past": false,
+        "email_on_failure": false,
+        "email_on_retry": false,
+        "retries": 1,
+        "retry_delay": 300
+    },
+    "tasks": [
+        {
+            "task_id": "extraccion_oracle",
+            "python_file": "/opt/airflow/dags/scripts/extraer_data.py",
+            "predecesor": null
+        },
+        {
+            "task_id": "mover_servidor2",
+            "python_file": "/opt/airflow/dags/scripts/mover_data.py",
+            "predecesor": "extraccion_oracle"
+        },
+        {
+            "task_id": "cargar_fload",
+            "python_file": "/opt/airflow/dags/scripts/cargar_fload.py",
+            "predecesor": "mover_servidor2"
+        },
+        {
+            "task_id": "cargar_teradata",
+            "python_file": "/opt/airflow/dags/scripts/cargar_teradata.py",
+            "predecesor": "cargar_fload"
+        },
+        {
+            "task_id": "task_id_5",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "cargar_teradata"
+        },
+        {
+            "task_id": "task_id_6",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_5"
+        },
+        {
+            "task_id": "task_id_7",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_6"
+        },
+        {
+            "task_id": "task_id_8",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_7"
+        },
+        {
+            "task_id": "task_id_9",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_8"
+        },
+        {
+            "task_id": "task_id_10",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_9"
+        },
+        {
+            "task_id": "task_id_11",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_10"
+        },
+        {
+            "task_id": "task_id_12",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_11"
+        },
+        {
+            "task_id": "task_id_13",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_12"
+        },
+        {
+            "task_id": "task_id_14",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_13"
+        },
+        {
+            "task_id": "task_id_15",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_14"
+        },
+        {
+            "task_id": "task_id_16",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_15"
+        },
+        {
+            "task_id": "task_id_17",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_16"
+        },
+        {
+            "task_id": "task_id_18",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_17"
+        },
+        {
+            "task_id": "task_id_19",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_18"
+        },
+        {
+            "task_id": "task_id_20",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_19"
+        },
+        {
+            "task_id": "task_id_21",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_20"
+        },
+        {
+            "task_id": "task_id_22",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_21"
+        },
+        {
+            "task_id": "task_id_23",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_22"
+        },
+        {
+            "task_id": "task_id_24",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_23"
+        },
+        {
+            "task_id": "task_id_25",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_24"
+        },
+        {
+            "task_id": "task_id_26",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_25"
+        },
+        {
+            "task_id": "task_id_27",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_26"
+        },
+        {
+            "task_id": "task_id_28",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_27"
+        },
+        {
+            "task_id": "task_id_29",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_28"
+        },
+        {
+            "task_id": "task_id_30",
+            "python_file": "/opt/airflow/dags/scripts/cargando.py",
+            "predecesor": "task_id_29"
+        }
+    ]
+}

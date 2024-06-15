@@ -1,0 +1,13 @@
+pasos para levantar sevidor flask
+
+1.- docker build  -t server-api-img .
+
+2.- docker run -d -p 8087:8087 --name server-api --network red-pravia -v /home/pravia/Documents/Airflow/proyecto-telef/seccion_11/app:/app  server-api-img
+
+
+
+
+**************
+podemos ingresar a una imagen
+docker run -it imagen_name /bin/sh
+**************

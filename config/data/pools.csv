@@ -1,0 +1,5 @@
+POOL_NAME,SLOTS,DESCRIPTION
+download,8,Descarga de archivos de la nube
+upload,3,Carga de archivos hacia la nube
+ftp,10,Transferencia de archivos entre servidores
+extraction,2,Extrae data de teradata

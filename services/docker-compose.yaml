@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  
+  mongodb_serv:
+    container_name: mongo_server
+    image: mongodb/mongodb-community-server
+    networks:
+      - red-pravia
+    restart: always
+    ports:
+      - 27017:27017
+
+  api_flask:
+    container_name: api_fg
+    image: fg-api-flask
+    networks:
+      - red-pravia
+    restart: always
+    ports:
+      - 8088:8088
+    volumes:
+      - ./app:/app
+
+  server_1:
+    container_name: server_1
+    image: server_ssh_img
+    networks:
+      - red-pravia
+    restart: always
+    ports:
+      - 2222:22
+    volumes:
+      - ../servers/data:/data
+
+networks:
+  red-pravia:
+    external: true
+    name: red-pravia
